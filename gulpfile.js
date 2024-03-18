@@ -1,6 +1,13 @@
 const gulp = require('gulp'); // importa o gulp e o sass//
 const sass = require('gulp-sass')(require('sass'));
 const imagemin = require('gulp-imagemin');
+const uglify = require('gulp-uglify');
+
+function scripts() {
+    return gulp.src('./src/scripts/*.js')
+        .pipe(uglify())
+        .pipe(gulp.dest('./dist/js'))
+}
 
 function styles ( ) {
     return gulp.src('./src/styles/*scss') // função styles pega todos aquivos scss//
@@ -14,8 +21,9 @@ function images ( ) {
         .pipe(gulp.dest('./dist/images')); //coloca na pasta de destino
 }
 
-    exports.default = gulp.parallel(styles, images); // executa as funçoes em paralelo//
+    exports.default = gulp.parallel(styles, images, scripts); // executa as funçoes em paralelo//
 
     exports.watch = function () {
         gulp.watch('./src/styles/*.scss', gulp.parallel(styles)) // função chama o watch para salvar alterações a pasta styles//
+        gulp.watch('./src/scripts/*.js', gulp.parallel(scripts))
     }
